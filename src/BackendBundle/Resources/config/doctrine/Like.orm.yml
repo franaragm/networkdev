@@ -1,0 +1,41 @@
+BackendBundle\Entity\Like:
+    type: entity
+    table: sn_like
+    indexes:
+        like_user_fk:
+            columns:
+                - user
+        like_publication_fk:
+            columns:
+                - publication
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    manyToOne:
+        user:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user:
+                    referencedColumnName: id
+            orphanRemoval: false
+        publication:
+            targetEntity: Publication
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                publication:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
