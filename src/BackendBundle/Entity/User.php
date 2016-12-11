@@ -57,6 +57,32 @@ class User
      */
     private $image;
 
+    /**
+     * campo de BD que va a actuar como username
+     */
+    public function getUsername() {
+        return $this->email;
+    }
+
+    public function getSalt() {
+        return null;
+    }
+
+    /**
+     * devuelve array de roles de usuario
+     */
+    public function getRoles() {
+        return $this->getRole();
+    }
+
+    public function eraseCredentials() {
+
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     /**
      * Get id

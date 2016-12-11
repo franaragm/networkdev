@@ -2,6 +2,12 @@
 # http://symfony.com/doc/current/security.html
 security:
 
+    # codificacion de contraseñas para registros y login
+    encoders:
+        BackendBundle\Entity\User:
+             algorithm: bcrypt
+             cost: 4
+
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         in_memory:
