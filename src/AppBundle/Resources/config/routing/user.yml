@@ -3,6 +3,14 @@ login:
   defaults: { _controller: AppBundle:User:login }
 
 
+login_check:
+  path: /login_check
+
+
+logout:
+  path: /logout
+
+
 register:
   path: /register
   defaults: { _controller: AppBundle:User:register }

@@ -37,21 +37,63 @@
 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li>
-                                <a href="{{ path("login") }}">
-                                    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
-                                    &nbsp;
-                                    Entrar
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path("register") }}">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                                    &nbsp;
-                                    Registro
-                                </a>
-                            </li>
+                            {% if app.user == null %}
+                                <li>
+                                    <a href="{{ path("login") }}">
+                                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                                        &nbsp;
+                                        Entrar
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path("register") }}">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                        &nbsp;
+                                        Registro
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
+
+                        {% if app.user != null %}
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        {{ app.user.name }} {{ app.user.surname }}
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="">
+                                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                                &nbsp; Mi perfil
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                                &nbsp; Mis datos
+                                            </a>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <li>
+                                            <a href="{{ path("logout") }}">
+                                                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                                                &nbsp; Salir
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                &nbsp; Ayuda
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        {% endif %}
                     </div>
 
                 </div>

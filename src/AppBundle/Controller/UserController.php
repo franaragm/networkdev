@@ -25,13 +25,26 @@ class UserController extends Controller
     }
 
     /**
+     * Autentificacion de usuarios usando el servicio de Symfony
+     *
      * @param Request $request
      * @return $this
      */
     public function loginAction(Request $request)
     {
+        // si el usuario esta logueado se redirecciona a /home
+        if (is_object($this->getUser())) {
+            return $this->redirect('home');
+        }
+
+        $authenticationUtils = $this->get('security.authentication_utils');
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // informacion de usuario que falla en autentificacion
+        $lastUsername = $authenticationUtils->getLastUsername();
+
         return $this->render('AppBundle:User:login.html.twig', array(
-            "titulo" => "Login"
+            'last_username' => $lastUsername,
+            'error' => $error
         ));
     }
 
@@ -45,6 +58,11 @@ class UserController extends Controller
      */
     public function registerAction(Request $request)
     {
+        // si el usuario esta logueado se redirecciona a /home
+        if (is_object($this->getUser())) {
+            return $this->redirect('home');
+        }
+
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
 
