@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use BackendBundle\Entity\User;
@@ -101,6 +102,31 @@ class UserController extends Controller
         return $this->render('AppBundle:User:register.html.twig', array(
             "form" => $form->createView()
         ));
+    }
+
+    /**
+     * Método que recoge el dato nick del form de registro via AJAX
+     * comprueba si nick esta en uso o no , devuelve una respuesta http con un string
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function nickTestAction(Request $request)
+    {
+        $nick = $request->get("nick");
+
+        $em = $this->getDoctrine()->getManager();
+        $user_repo = $em->getRepository("BackendBundle:User");
+        $user_isset = $user_repo->findOneBy(array("nick" => $nick));
+
+        $result = "used";
+        if (count($user_isset) >= 1 && is_object($user_isset)){
+            $result = "used";
+        } else {
+            $result = "unused";
+        }
+
+        return new Response($result);
     }
 
 }

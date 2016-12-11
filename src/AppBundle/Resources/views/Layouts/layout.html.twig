@@ -9,6 +9,9 @@
             <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}" type="text/css">
         {% endblock %}
         {% block javascripts %}
+            <script type="text/javascript">
+                var URL = "{{ app.request.getSchemeAndHttpHost() }}/app_dev.php";
+            </script>
             <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
             <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
         {% endblock %}
