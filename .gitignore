@@ -19,6 +19,8 @@
 /bin/
 /composer.phar
 
+/web/uploads/
+
 # -- Editores -----------------------------------------
 # vim
 .*.sw[a-z]

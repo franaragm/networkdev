@@ -4,6 +4,24 @@ body {
     background: #eee;
 }
 
+/* Header */
+
+.navbar-collapse .avatar {
+    background: white;
+    border-radius: 500px;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    float: left;
+    margin-right: 12px;
+    margin-top: -5px;
+}
+
+.navbar-collapse .avatar img {
+    height: 100%;
+    text-align: center;
+}
+
 /* Registro */
 
 .box-form {
@@ -18,3 +36,4 @@ body {
 .box-form input {
     margin-bottom: 10px;
 }
+

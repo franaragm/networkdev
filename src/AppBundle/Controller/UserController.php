@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 use BackendBundle\Entity\User;
 use AppBundle\Form\RegisterType;
+use AppBundle\Form\UserType;
 
 
 class UserController extends Controller
@@ -145,6 +146,82 @@ class UserController extends Controller
         }
 
         return new Response($result);
+    }
+
+    /**
+     * Carga vista con formulario definido en clase UserType
+     * Configura datos de formulario en objeto User de la session
+     * Comprueba datos de email y nick antes de guardar datos
+     * Guarda imagen y configura dato de imagen
+     * Usa session para poder mostrar mensajes en el proceso de registro.
+     *
+     * @param Request $request
+     * @return $this
+     */
+    public function editUserAction(Request $request)
+    {
+        $user = $this->getUser(); //carga los datos de usuario logueado
+        $user_image = $user->getImage(); // imagen antigua
+        $form = $this->createForm(UserType::class, $user);
+
+        // configura datos de envio del formulario en objeto user
+        $form->handleRequest($request);
+        // procesado de envio de form de registro
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+
+                $em = $this->getDoctrine()->getManager();
+
+                $query = $em->createQuery('SELECT u FROM BackendBundle:User u WHERE u.email = :email OR u.nick = :nick')
+                    ->setParameter('email', $form->get("email")->getData())
+                    ->setParameter('nick', $form->get("nick")->getData());
+
+                $user_isset = $query->getResult();
+
+                // si los datos de session (email y nick) son iguales a los que hay en (BD y datos form)
+                // o si los datos nuevos (email o nick) del form de edicion de perfil
+                // en la base de datos no hay otro email ni nick igual
+                if (($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick()) || count($user_isset) == 0){
+
+                    // upload file
+                    $file = $form["image"]->getData();
+
+                    if (!empty($file) && $file != null) {
+                        $ext = $file->guessExtension(); // obtencion de extension
+                        if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif') {
+                            $file_name = $user->getId().time().'.'.$ext;
+                            $file->move("uploads/users", $file_name);
+
+                            $user->setImage($file_name);
+                        }
+                    } else {
+                        $user->setImage($user_image);
+                    }
+
+                    $em->persist($user);
+                    $flush = $em->flush();//guardar en BD
+
+                    if ($flush == null){
+                        $status = "Has modificado tus datos correctamente";
+                    } else {
+                        $status = "No se han podido modificar tus datos correctamente";
+                    }
+
+                } else {
+                    $status = "Hay ya un usuario existente con el email o nick";
+                }
+
+            } else {
+                $status = "No se han modificado tus datos correctamente";
+            }
+
+            $this->session->getFlashBag()->add("status", $status);
+            return $this->redirect('my-data');
+        }
+
+        return $this->render('AppBundle:User:edit_user.html.twig', array(
+            "form" => $form->createView()
+        ));
     }
 
 }
