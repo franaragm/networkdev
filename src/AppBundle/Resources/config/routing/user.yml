@@ -2,19 +2,15 @@ login:
   path: /login
   defaults: { _controller: AppBundle:User:login }
 
-
 login_check:
   path: /login_check
-
 
 logout:
   path: /logout
 
-
 register:
   path: /register
   defaults: { _controller: AppBundle:User:register }
-
 
 user_nick_test:
   path: /nick-test
@@ -24,3 +20,7 @@ user_nick_test:
 user_edit:
   path: /my-data
   defaults: { _controller: AppBundle:User:editUser }
+
+user_list:
+  path: /people
+  defaults: { _controller: AppBundle:User:users }

@@ -77,12 +77,12 @@ class UserController extends Controller
                 // $user_repo = $em->getRepository("BackendBundle:User");
 
                 $query = $em->createQuery('SELECT u FROM BackendBundle:User u WHERE u.email = :email OR u.nick = :nick')
-                ->setParameter('email', $form->get("email")->getData())
-                ->setParameter('nick', $form->get("nick")->getData());
+                    ->setParameter('email', $form->get("email")->getData())
+                    ->setParameter('nick', $form->get("nick")->getData());
 
                 $user_isset = $query->getResult();
 
-                if (count($user_isset) == 0){
+                if (count($user_isset) == 0) {
 
                     // codificacion de password
                     $factory = $this->get("security.encoder_factory");
@@ -97,7 +97,7 @@ class UserController extends Controller
                     $em->persist($user);
                     $flush = $em->flush();//guardar en BD
 
-                    if ($flush == null){
+                    if ($flush == null) {
                         $status = "Te has registrado correctamente";
 
                         $this->session->getFlashBag()->add("status", $status);
@@ -139,7 +139,7 @@ class UserController extends Controller
         $user_isset = $user_repo->findOneBy(array("nick" => $nick));
 
         $result = "used";
-        if (count($user_isset) >= 1 && is_object($user_isset)){
+        if (count($user_isset) >= 1 && is_object($user_isset)) {
             $result = "used";
         } else {
             $result = "unused";
@@ -181,7 +181,7 @@ class UserController extends Controller
                 // si los datos de session (email y nick) son iguales a los que hay en (BD y datos form)
                 // o si los datos nuevos (email o nick) del form de edicion de perfil
                 // en la base de datos no hay otro email ni nick igual
-                if (($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick()) || count($user_isset) == 0){
+                if (($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick()) || count($user_isset) == 0) {
 
                     // upload file
                     $file = $form["image"]->getData();
@@ -189,7 +189,7 @@ class UserController extends Controller
                     if (!empty($file) && $file != null) {
                         $ext = $file->guessExtension(); // obtencion de extension
                         if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif') {
-                            $file_name = $user->getId().time().'.'.$ext;
+                            $file_name = $user->getId() . time() . '.' . $ext;
                             $file->move("uploads/users", $file_name);
 
                             $user->setImage($file_name);
@@ -201,7 +201,7 @@ class UserController extends Controller
                     $em->persist($user);
                     $flush = $em->flush();//guardar en BD
 
-                    if ($flush == null){
+                    if ($flush == null) {
                         $status = "Has modificado tus datos correctamente";
                     } else {
                         $status = "No se han podido modificar tus datos correctamente";
@@ -222,6 +222,36 @@ class UserController extends Controller
         return $this->render('AppBundle:User:edit_user.html.twig', array(
             "form" => $form->createView()
         ));
+    }
+
+    /**
+     * Carga vista con formulario definido en clase UserType
+     * Configura datos de formulario en objeto User de la session
+     * Comprueba datos de email y nick antes de guardar datos
+     * Guarda imagen y configura dato de imagen
+     * Usa session para poder mostrar mensajes en el proceso de registro.
+     *
+     * @param Request $request
+     * @return $this
+     */
+    public function usersAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = "SELECT u FROM BackendBundle:User u";
+        $query = $em->createQuery($dql);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // parametro request de paginacion y en que num de pagina empieza
+            2 //numero de registros por paginas
+        );
+
+        return $this->render('AppBundle:User:users.html.twig', array(
+            'pagination' => $pagination
+        ));
+
     }
 
 }
