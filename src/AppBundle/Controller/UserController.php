@@ -178,10 +178,10 @@ class UserController extends Controller
 
                 $user_isset = $query->getResult();
 
-                // si los datos de session (email y nick) son iguales a los que hay en (BD y datos form)
-                // o si los datos nuevos (email o nick) del form de edicion de perfil
+                // si los datos nuevos (email o nick) del form de edicion de perfil
                 // en la base de datos no hay otro email ni nick igual
-                if (($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick()) || count($user_isset) == 0) {
+                // o si los datos de session (email y nick) son iguales a los que hay en (BD y datos form)
+                if (count($user_isset) == 0 || ($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick())) {
 
                     // upload file
                     $file = $form["image"]->getData();
@@ -225,11 +225,8 @@ class UserController extends Controller
     }
 
     /**
-     * Carga vista con formulario definido en clase UserType
-     * Configura datos de formulario en objeto User de la session
-     * Comprueba datos de email y nick antes de guardar datos
-     * Guarda imagen y configura dato de imagen
-     * Usa session para poder mostrar mensajes en el proceso de registro.
+     * Carga lista de usuarios y los pasa al objeto que pagina los resultados
+     * la paginación de resultados se pasa a la vista
      *
      * @param Request $request
      * @return $this
