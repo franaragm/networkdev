@@ -235,14 +235,51 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $dql = "SELECT u FROM BackendBundle:User u";
+        $dql = "SELECT u FROM BackendBundle:User u ORDER BY u.id ASC";
         $query = $em->createQuery($dql);
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1), // parametro request de paginacion y en que num de pagina empieza
-            2 //numero de registros por paginas
+            5 //numero de registros por paginas
+        );
+
+        return $this->render('AppBundle:User:users.html.twig', array(
+            'pagination' => $pagination
+        ));
+
+    }
+
+    /**
+     * Realiza búsqueda con el parametro request y
+     * muestra resultados en vista users
+     *
+     * @param Request $request
+     * @return $this
+     */
+    public function searchAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $search = $request->query->get('search', null);
+
+
+        if ($search == null) {
+            return $this->redirect($this->generateUrl('home_publications'));
+        }
+
+        $dql = "SELECT u FROM BackendBundle:User u 
+                  WHERE u.name LIKE :search 
+                  OR u.surname LIKE :search 
+                  OR u.nick LIKE :search ORDER BY u.id ASC";
+        $query = $em->createQuery($dql)->setParameter('search', "%$search%");
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // parametro request de paginacion y en que num de pagina empieza
+            5 //numero de registros por paginas
         );
 
         return $this->render('AppBundle:User:users.html.twig', array(

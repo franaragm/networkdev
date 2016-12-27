@@ -14,6 +14,7 @@
             </script>
             <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
             <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('assets/js/jquery-ias.min.js') }}"></script>
         {% endblock %}
     </head>
 
@@ -64,6 +65,16 @@
                                         <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
                                         &nbsp; Gente
                                     </a>
+                                </li>
+                                <li>
+                                    <form action="{{ path('user_search') }}" class="navbar-form navbar-left">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Buscar gente" name="search">
+                                        </div>
+                                        <button type="submit" class="btn btn-default">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                        </button>
+                                    </form>
                                 </li>
                             {% endif %}
                         </ul>
