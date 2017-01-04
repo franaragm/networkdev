@@ -27,6 +27,12 @@ class FollowController extends Controller
      */
     public function followAction(Request $request)
     {
+        $isAjax = $request->isXmlHttpRequest();
+
+        if (!$isAjax) {
+            return $this->redirect("people");
+        }
+
         $user = $this->getUser();
         $followed_id = $request->get('followed'); // id de usuario que se va a seguir
 
@@ -60,6 +66,12 @@ class FollowController extends Controller
      */
     public function unfollowAction(Request $request)
     {
+        $isAjax = $request->isXmlHttpRequest();
+
+        if (!$isAjax) {
+            return $this->redirect("people");
+        }
+
         $user = $this->getUser();
         $followed_id = $request->get('followed'); // id de usuario que se va a seguir
 

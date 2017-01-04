@@ -132,6 +132,12 @@ class UserController extends Controller
      */
     public function nickTestAction(Request $request)
     {
+        $isAjax = $request->isXmlHttpRequest();
+
+        if (!$isAjax) {
+            return $this->redirect("register");
+        }
+
         $nick = $request->get("nick");
 
         $em = $this->getDoctrine()->getManager();
