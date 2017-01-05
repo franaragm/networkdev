@@ -15,7 +15,7 @@
                  {% if app.user.image == null %}
                      <img src="{{ asset('assets/images/default.png') }}" alt="{{ app.user.name }}">
                  {% else %}
-                     <img src="{{ asset('uploads/users/'~app.user.image) }}" alt="{{ app.user.name }}">
+                     <img src="{{ asset('uploads/media/'~app.user.id~'_usermedia/'~app.user.image) }}" alt="{{ app.user.name }}">
                  {% endif %}
              </div>
 

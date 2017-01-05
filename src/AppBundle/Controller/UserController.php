@@ -195,8 +195,9 @@ class UserController extends Controller
                     if (!empty($file) && $file != null) {
                         $ext = $file->guessExtension(); // obtencion de extension
                         if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif') {
-                            $file_name = $user->getId() . time() . '.' . $ext;
-                            $file->move("uploads/users", $file_name);
+                            $file_name = $user->getId().'_imgprofile_'.time().'.'.$ext;
+                            $user_media_route = 'uploads/media/'.$user->getId().'_usermedia';
+                            $file->move($user_media_route, $file_name);
 
                             $user->setImage($file_name);
                         }

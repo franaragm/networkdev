@@ -40,14 +40,16 @@ class PublicationController extends Controller
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
 
+                $user_media_route = 'uploads/media/'.$user->getId().'_usermedia';
+
                 // upload image
                 $file = $form['image']->getData();
                 if (!empty($file) && $file != null) {
                     $ext = $file->guessExtension(); // obtencion de extension
 
                     if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif') {
-                        $file_name = $user->getId().time().".".$ext;
-                        $file->move("uploads/publications/images", $file_name);
+                        $file_name = $user->getId().'_imgpublication_'.time().'.'.$ext;
+                        $file->move($user_media_route.'/publications/images', $file_name);
 
                         $publication->setImage($file_name);
                     } else {
@@ -63,8 +65,8 @@ class PublicationController extends Controller
                     $ext = $doc->guessExtension(); // obtencion de extension
 
                     if ($ext == 'pdf') {
-                        $file_name = $user->getId().time().".".$ext;
-                        $doc->move("uploads/publications/documents", $file_name);
+                        $file_name = $user->getId().'_docpublication_'.time().'.'.$ext;
+                        $doc->move($user_media_route.'/publications/documents', $file_name);
 
                         $publication->setDocument($file_name);
                     } else {
