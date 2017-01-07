@@ -86,9 +86,9 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                         <div class="avatar">
                                             {% if app.user.image == null %}
-                                                <img src="{{ asset('assets/images/default.png') }}" alt="{{ app.user.name }}">
+                                                <img src="{{ asset('assets/images/default.png') }}" alt="{{ app.user.nick }}">
                                             {% else %}
-                                                <img src="{{ asset('uploads/media/'~app.user.id~'_usermedia/'~app.user.image) }}" alt="{{ app.user.name }}">
+                                                <img src="{{ asset('uploads/media/'~app.user.id~'_usermedia/'~app.user.image) }}" alt="{{ app.user.nick }}">
                                             {% endif %}
                                         </div>
 

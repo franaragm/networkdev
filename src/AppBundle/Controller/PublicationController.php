@@ -96,8 +96,57 @@ class PublicationController extends Controller
             return $this->redirectToRoute('home_publications');
         }
 
+        $publications = $this->getPublications($request);
+
         return $this->render('AppBundle:Publication:home.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'publications' => $publications
         ));
     }
+
+    /**
+     * Recupera mediante los datos de usuario logueado sus publicaciones
+     * y las publicaciones de las personas que sigue
+     * para ello se usa una subconsulta en dql
+     * se devuelve un objeto con los resultados paginados
+     *
+     * @param $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function getPublications($request) {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $publication_repo = $em->getRepository('BackendBundle:Publication');
+        $follow_repo = $em->getRepository('BackendBundle:Follow');
+
+        /*
+         * SELECT texto FROM sn_publication WHERE user = 4 OR
+         * user IN (SELECT followed FROM sn_follow WHERE user = 4);
+         */
+
+        $following = $follow_repo->findBy(array('user' => $user));
+
+        $following_array = array();
+        foreach($following as $follow) {
+            $following_array[] = $follow->getFollowed();
+        }
+
+        $query = $publication_repo->createQueryBuilder('p')
+            ->where('p.user = (:user_id) OR p.user IN (:following)')
+            ->setParameter('user_id', $user->getId())
+            ->setParameter('following', $following_array)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery();
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // parametro request de paginacion y en que num de pagina empieza
+            5 //numero de registros por paginas
+        );
+
+        return $pagination;
+    }
+
 }

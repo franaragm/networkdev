@@ -38,9 +38,10 @@ body {
     margin-bottom: 10px;
 }
 
-/* Gente */
+/* Gente y Timeline */
 
-.user-item .avatar {
+.user-item .avatar,
+.publication-item .avatar {
     background: #eee;
     border-radius: 550px;
     width: 75px;
@@ -49,12 +50,14 @@ body {
     float: left;
 }
 
-.user-item .avatar img {
+.user-item .avatar img,
+.publication-item .avatar img {
     height: 100%;
     text-align: center;
 }
 
-.user-item .user-item-content {
+.user-item .user-item-content,
+.publication-item .publication-item-content {
     padding: 10px;
     margin-left: 85px;
 }
@@ -114,6 +117,15 @@ body {
 #new-publication input,
 #new-publication textarea {
     margin-bottom: 10px;
+}
+
+.pub-name-link {
+    font-weight: bold;
+    color: #000;
+}
+
+.pub-date {
+    color: #808080;
 }
 
 

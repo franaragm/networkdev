@@ -269,7 +269,7 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $search = $request->query->get('search', null);
+        $search = trim($request->query->get('search', null));
 
 
         if ($search == null) {

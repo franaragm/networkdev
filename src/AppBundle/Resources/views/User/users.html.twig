@@ -22,9 +22,9 @@
                     <div class="col-lg-12 user-item">
                         <div class="avatar">
                             {% if user.image == null %}
-                                <img src="{{ asset('assets/images/default.png') }}" alt="{{ user.name }}">
+                                <img src="{{ asset('assets/images/default.png') }}" alt="{{ user.nick }}">
                             {% else %}
-                                <img src="{{ asset('uploads/media/'~app.user.id~'_usermedia/'~app.user.image) }}" alt="{{ user.name }}">
+                                <img src="{{ asset('uploads/media/'~user.id~'_usermedia/'~user.image) }}" alt="{{ user.nick }}">
                             {% endif %}
                         </div>
 
