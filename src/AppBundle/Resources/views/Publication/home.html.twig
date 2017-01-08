@@ -34,7 +34,26 @@
                                  </span>
                              </p>
 
-                             {{ publication.texto }}
+                             <p>{{ publication.texto }}</p>
+
+                             {% if (publication.user.id is defined) and (publication.user.id == app.user.id) %}
+                                 <span data-id="{{ publication.id }}" class="btn-delete-pub glyphicon glyphicon-trash" aria-hidden="true"></span>
+                             {% endif %}
+
+                             {% if(publication.document is defined) and (publication.document != null) %}
+                                 <a href="{{ asset('uploads/media/'~publication.user.id~'_usermedia/publications/documents/'~publication.document) }}"
+                                    class="btn-doc glyphicon glyphicon-save" aria-hidden="true" target="_blank">
+                                 </a>
+                             {% endif %}
+
+                             {% if(publication.image is defined) and (publication.image != null) %}
+                                 <span class="btn-img glyphicon glyphicon-picture" aria-hidden="true"></span>
+                                 <div class="clearfix"></div>
+
+                                 <div class="pub-image">
+                                     <img src="{{ asset('uploads/media/'~publication.user.id~'_usermedia/publications/images/'~publication.image) }}" alt="{{ publication.image }}">
+                                 </div>
+                             {% endif %}
                          </div>
                          <div class="clearfix"></div>
                          <hr>

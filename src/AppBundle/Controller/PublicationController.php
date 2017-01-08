@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use AppBundle\Form\PublicationType;
@@ -147,6 +148,38 @@ class PublicationController extends Controller
         );
 
         return $pagination;
+    }
+
+
+    /**
+     * Borrado de Publicaciones via AJAX a traves de URL
+     * Solo el autor de la publicacion puede borrar sus publicaciones
+     *
+     * @param null $id
+     * @return Response
+     */
+    public function removePublicationAction($id = null)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $publication_repo = $em->getRepository('BackendBundle:Publication');
+
+        $publication = $publication_repo->find($id);
+        $user = $this->getUser();
+
+        if($user->getId() == $publication->getUser()->getId()) {
+            $em->remove($publication);
+            $flush = $em->flush();
+
+            if ($flush == null){
+                $status = 'La publicación se ha borrado correctamente';
+            } else {
+                $status = 'La publicación no se ha borrado';
+            }
+        } else {
+            $status = 'La publicación no se ha borrado';
+        }
+
+        return new Response($status);
     }
 
 }
