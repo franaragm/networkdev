@@ -46,7 +46,9 @@ function buttons() {
             type: 'GET',
             success: function (response) {
                 console.log(response);
+                $("#ajax-notifications").removeClass('hidden').html(response);
             }
         });
     });
+
 }

@@ -137,6 +137,7 @@
                     {% for message in app.session.flashbag().get('status') %}
                         <div class="alert alert-success">{{ message }}</div>
                     {% endfor %}
+                        <div id="ajax-notifications" class="alert alert-success hidden"></div>
                 </div>
             </div>
             <div class="clearfix"></div>
