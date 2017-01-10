@@ -1,10 +1,10 @@
-/* Estilos generales */
+/* ---------------- Estilos generales ------------- */
 
 body {
     background: #eee;
 }
 
-/* Header */
+/* --------------------- Header -------------------- */
 
 .navbar-collapse .avatar {
     background: white;
@@ -22,7 +22,7 @@ body {
     text-align: center;
 }
 
-/* Registro */
+/* -------------------- Registro ------------------- */
 
 .box-form,
 .box-default {
@@ -38,7 +38,7 @@ body {
     margin-bottom: 10px;
 }
 
-/* Gente y Timeline */
+/* -------------- Gente y Timeline --------------- */
 
 .user-item .avatar,
 .publication-item .avatar {
@@ -62,7 +62,7 @@ body {
     margin-left: 85px;
 }
 
-/* Home */
+/* ------------------- Home ---------------- */
 
 #timeline {
     margin-right: 20px;
@@ -146,5 +146,22 @@ body {
     color: #444 !important;
 }
 
+.like {
+    font-size: 30px;
+    margin-top: -41px;
+}
 
+.like .btn-like:hover {
+    color: red !important;
+    cursor: pointer;
+}
 
+.like .active {
+    color: red !important;
+}
+
+.btn-like, .btn-dislike {
+    background: white;
+    padding: 10px;
+    border-radius: 50%;
+}

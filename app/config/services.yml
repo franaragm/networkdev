@@ -21,3 +21,11 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+
+    app.twig.like_extension:
+        class: AppBundle\Twig\LikeExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }

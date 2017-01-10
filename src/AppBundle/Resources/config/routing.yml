@@ -10,6 +10,10 @@ app_follow:
   resource: "@AppBundle/Resources/config/routing/follow.yml"
   prefix: /
 
+app_like:
+  resource: "@AppBundle/Resources/config/routing/like.yml"
+  prefix: /
+
 app_homepage:
   path: /
   defaults: { _controller: AppBundle:User:login }
