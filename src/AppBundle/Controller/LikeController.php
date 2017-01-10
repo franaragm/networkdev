@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-use BackendBundle\Entity\User;
 use BackendBundle\Entity\Publication;
 use BackendBundle\Entity\Like;
 

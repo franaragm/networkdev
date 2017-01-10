@@ -114,6 +114,34 @@ body {
     opacity: 0.7;
 }
 
+#user-card .follow-data {
+    width: 25%;
+    float: left;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+#user-card .follow-data a {
+    color: #444;
+}
+
+#user-card .follow-data a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+#user-card .follow-data .label-stat {
+    display: block;
+}
+
+#user-card .follow-data .number-stat {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 #new-publication input,
 #new-publication textarea {
     margin-bottom: 10px;
@@ -165,3 +193,4 @@ body {
     padding: 10px;
     border-radius: 50%;
 }
+

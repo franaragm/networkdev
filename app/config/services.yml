@@ -29,3 +29,11 @@ services:
             doctrine: "@doctrine"
         tags:
             - { name: twig.extension }
+
+    app.twig.user_stats_extension:
+        class: AppBundle\Twig\UserStatsExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
