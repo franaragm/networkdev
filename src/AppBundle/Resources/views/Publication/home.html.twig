@@ -23,7 +23,7 @@
 
                          <div class="publication-item-content">
                              <p>
-                                 <a class="pub-name-link" href="#">
+                                 <a class="pub-name-link" href="{{ path('user_profile', {'nick': publication.user.nick}) }}">
                                      {{ publication.user.name }} {{ publication.user.surname }}
                                  </a>
                                  -
@@ -101,7 +101,9 @@
              </div>
 
              <div class="name-surname">
-                 <a href="#">{{ app.user.name }} {{ app.user.surname }}</a>
+                 <a href="{{ path('user_profile', {'nick': app.user.nick}) }}">
+                     {{ app.user.name }} {{ app.user.surname }}
+                 </a>
                  <div class="clearfix"></div>
                  <span class="nickname">
                      {{ app.user.nick }}

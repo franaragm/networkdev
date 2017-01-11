@@ -295,4 +295,45 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Carga vista con datos del perfil de un usuario mostrando sus publicaciones
+     *
+     * @param Request $request
+     * @param null $nick
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function profileAction(Request $request, $nick = null)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if($nick != null) {
+            $user_repo = $em->getRepository('BackendBundle:User');
+            $user = $user_repo->findOneBy(array(
+                'nick' => $nick
+            ));
+        } else {
+            $user = $this->getUser();
+        }
+
+        if(empty($user) || !is_object($user)) {
+            return $this->redirect($this->generateUrl('home_publications'));
+        }
+
+        $user_id = $user->getId();
+        $dql = "SELECT p FROM BackendBundle:Publication p WHERE p.user = $user_id ORDER BY p.id DESC";
+        $query = $em->createQuery($dql);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // parametro request de paginacion y en que num de pagina empieza
+            5 //numero de registros por paginas
+        );
+
+        return $this->render('AppBundle:User:profile.html.twig', array(
+            'user' => $user,
+            'publications' => $pagination
+        ));
+    }
+
 }

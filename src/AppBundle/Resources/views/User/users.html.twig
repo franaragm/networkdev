@@ -29,7 +29,11 @@
                         </div>
 
                         <div class="user-item-content">
-                            <p>{{ user.name }} {{ user.surname }} - {{ user.nick }}</p>
+                            <p>
+                                <a class="user_link" href="{{ path('user_profile', {'nick': user.nick}) }}">
+                                {{ user.name }} {{ user.surname }}
+                                </a> - {{ user.nick }}
+                            </p>
                             <p>{{ user.bio }}</p>
                         </div>
 
