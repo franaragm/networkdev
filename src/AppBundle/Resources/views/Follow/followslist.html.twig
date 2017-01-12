@@ -8,17 +8,29 @@
 {% block content %}
     <div class="container">
         <div class="col-lg-12 box-default">
-            <h1>Gente</h1>
+            {% if type == 'following' %}
+                <h1 class="box-header">Gente que está siguiendo {{ profile_user.nick }}</h1>
+            {% elseif type == 'followers' %}
+                <h1 class="box-header">Seguidores de {{ profile_user.nick }}</h1>
+            {% endif %}
             <div class="count">
                 <span class="label label-primary">
-                    Total de personas {{ users.getTotalItemCount }}
+                    Total de personas {{ followslist.getTotalItemCount }}
                 </span>
             </div>
 
             <hr>
 
             <div class="box-content box-users">
-                {% for user in users %}
+                {% for follow in followslist %}
+
+                    {% if type == 'following' %}
+                        {% set user = follow.followed %}
+                    {% elseif type == 'followers' %}
+                        {% set user = follow.user %}
+                    {% endif %}
+
+
                     <div class="col-lg-12 user-item">
                         <div class="avatar">
                             {% if user.image == null %}
@@ -66,7 +78,7 @@
             </div>
 
             <div class="navigation">
-                {{ knp_pagination_render(users) }}
+                {{ knp_pagination_render(followslist) }}
             </div>
             <div class="clearfix"></div>
         </div>

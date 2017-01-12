@@ -94,4 +94,57 @@ class FollowController extends Controller
         return new Response($status);
 
     }
+
+    /**
+     * Carga vista con lista de usuarios que esta siguiendo el usuario logueado
+     * o con lista de usuarios que siguen al usuario logueado
+     * para diferenciar se usa parametro a través de URL
+     *
+     * @param Request $request
+     * @param null $nick
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function followsListAction(Request $request, $nick = null, $type = null)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if($nick != null) {
+            $user_repo = $em->getRepository('BackendBundle:User');
+            $user = $user_repo->findOneBy(array(
+                'nick' => $nick
+            ));
+        } else {
+            $user = $this->getUser();
+        }
+
+        if(empty($user) || !is_object($user)) {
+            return $this->redirect($this->generateUrl('home_publications'));
+        }
+
+        $user_id = $user->getId();
+
+        if($type == 'following') {
+            $dql = "SELECT f FROM BackendBundle:Follow f WHERE f.user = $user_id ORDER BY f.id DESC";
+        } elseif($type == 'followers') {
+            $dql = "SELECT f FROM BackendBundle:Follow f WHERE f.followed = $user_id ORDER BY f.id DESC";
+        } else {
+            return $this->redirect($this->generateUrl('home_publications'));
+        }
+
+        $query = $em->createQuery($dql);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // parametro request de paginacion y en que num de pagina empieza
+            5 //numero de registros por paginas
+        );
+
+        return $this->render('AppBundle:Follow:followslist.html.twig', array(
+            'type' => $type,
+            'profile_user' => $user,
+            'followslist' => $pagination
+        ));
+
+    }
 }

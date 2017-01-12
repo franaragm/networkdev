@@ -2,7 +2,10 @@ follow_follow:
   path: /follow
   defaults: { _controller: AppBundle:Follow:follow }
 
-
 follow_unfollow:
   path: /unfollow
   defaults: { _controller: AppBundle:Follow:unfollow }
+
+follows_list_users:
+  path: /follows/{nick}/{type}
+  defaults: { _controller: AppBundle:Follow:followsList, nick: null, type: null }

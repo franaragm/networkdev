@@ -115,7 +115,7 @@
              {% set user_all_stats = app.user|user_stats %}
 
              <div class="follow-data">
-                 <a href="#">
+                 <a href="{{ path('follows_list_users', {'nick': app.user.nick, 'type': 'following'}) }}">
                      <span class="label-stat">
                          Siguiendo
                      </span>
@@ -126,7 +126,7 @@
              </div>
 
              <div class="follow-data">
-                 <a href="#">
+                 <a href="{{ path('follows_list_users', {'nick': app.user.nick, 'type': 'followers'}) }}">
                      <span class="label-stat">
                          Seguidores
                      </span>
@@ -137,7 +137,7 @@
              </div>
 
              <div class="follow-data">
-                 <a href="#">
+                 <a href="{{ path('user_profile', {'nick': app.user.nick}) }}">
                      <span class="label-stat">
                          Publicaciones
                      </span>

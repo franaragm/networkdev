@@ -253,7 +253,7 @@ class UserController extends Controller
         );
 
         return $this->render('AppBundle:User:users.html.twig', array(
-            'pagination' => $pagination
+            'users' => $pagination
         ));
 
     }
@@ -290,7 +290,7 @@ class UserController extends Controller
         );
 
         return $this->render('AppBundle:User:users.html.twig', array(
-            'pagination' => $pagination
+            'users' => $pagination
         ));
 
     }
