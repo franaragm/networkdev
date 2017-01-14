@@ -8,10 +8,18 @@
 {% block content %}
      <div class="container">
 
-         <div id="timeline" class="col-lg-7 box-default pull-left">
-             <h1 class="box-header">Timeline</h1>
+         <div id="timeline" class="col-lg-12 box-default pull-left">
+             <h1 class="box-header">Publicaciones que le gustan a {{ profile_user.nick }}</h1>
+
+             <div class="count">
+                 <span class="label label-primary">
+                     Total de publicaciones: {{ likeslist.getTotalItemCount }}
+                 </span>
+             </div>
+
              <div class="box-content">
-                 {% for publication in publications %}
+                 {% for like in likeslist %}
+                     {% set publication = like.publication %}
                      <div class="col-lg-12 publication-item">
                          <div class="avatar">
                              {% if publication.user.image == null %}
@@ -86,86 +94,10 @@
                  {% endfor %}
 
                  <div class="navigation">
-                     {{ knp_pagination_render(publications) }}
+                     {{ knp_pagination_render(likeslist) }}
                  </div>
              </div>
          </div>
 
-         <div id="user-card" class="col-lg-4 box-default pull-left">
-             <div class="avatar">
-                 {% if app.user.image == null %}
-                     <img src="{{ asset('assets/images/default.png') }}" alt="{{ app.user.nick }}">
-                 {% else %}
-                     <img src="{{ asset('uploads/media/'~app.user.id~'_usermedia/'~app.user.image) }}" alt="{{ app.user.nick }}">
-                 {% endif %}
-             </div>
-
-             <div class="name-surname">
-                 <a href="{{ path('user_profile', {'nick': app.user.nick}) }}">
-                     {{ app.user.name }} {{ app.user.surname }}
-                 </a>
-                 <div class="clearfix"></div>
-                 <span class="nickname">
-                     {{ app.user.nick }}
-                 </span>
-             </div>
-
-             <div class="clearfix"></div>
-
-             {% set user_all_stats = app.user|user_stats %}
-
-             <div class="follow-data">
-                 <a href="{{ path('follows_list_users', {'nick': app.user.nick, 'type': 'following'}) }}">
-                     <span class="label-stat">
-                         Siguiendo
-                     </span>
-                     <span class="number-stat">
-                         {{ user_all_stats.following }}
-                     </span>
-                 </a>
-             </div>
-
-             <div class="follow-data">
-                 <a href="{{ path('follows_list_users', {'nick': app.user.nick, 'type': 'followers'}) }}">
-                     <span class="label-stat">
-                         Seguidores
-                     </span>
-                     <span class="number-stat">
-                         {{ user_all_stats.followers }}
-                     </span>
-                 </a>
-             </div>
-
-             <div class="follow-data">
-                 <a href="{{ path('user_profile', {'nick': app.user.nick}) }}">
-                     <span class="label-stat">
-                         Publicaciones
-                     </span>
-                     <span class="number-stat">
-                         {{ user_all_stats.publications }}
-                     </span>
-                 </a>
-             </div>
-
-             <div class="follow-data">
-                 <a href="{{ path('user_likes', {'nick': app.user.nick}) }}">
-                     <span class="label-stat">
-                         Me gustan
-                     </span>
-                     <span class="number-stat">
-                         {{ user_all_stats.likes }}
-                     </span>
-                 </a>
-             </div>
-
-         </div>
-
-         <div id="new-publication" class="col-lg-4 box-default pull-left">
-             <h1 class="box-header">Crear publicación</h1>
-
-             {{ form_start(form, {'action':'', 'method':'POST'}) }}
-             {{ form_errors(form) }}
-             {{ form_end(form) }}
-         </div>
      </div>
 {% endblock %}

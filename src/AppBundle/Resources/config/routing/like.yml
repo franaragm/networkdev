@@ -5,3 +5,7 @@ like_publication:
 dislike_publication:
   path: /dislike/{id}
   defaults: { _controller: AppBundle:Like:dislike, id: null }
+
+user_likes:
+  path: /likes/{nick}
+  defaults: { _controller: AppBundle:Like:likesList, nick: null }
