@@ -8,7 +8,13 @@ use Symfony\Component\HttpFoundation\Request;
 class NotificationController extends Controller
 {
 
-    public function indexAction(Request $request)
+    /**
+     * Muestra vista con las notificaciones del usuario logueado
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function notificationsAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 

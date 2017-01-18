@@ -25,11 +25,12 @@ class PublicationController extends Controller
     /**
      * Crea formulario con la clase PublicationType y lo renderiza en vista
      * Comprueba el formulario enviado y guarda los datos
+     * Además pasa a la vista las publicaciones del timeline
      *
      * @param Request $request
      * @return $this
      */
-    public function indexAction(Request $request)
+    public function publicationsAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();

@@ -1,6 +1,6 @@
 home_publications:
   path: /home
-  defaults: { _controller: AppBundle:Publication:index }
+  defaults: { _controller: AppBundle:Publication:publications }
 
 remove_publication:
   path: /publication/remove/{id}
