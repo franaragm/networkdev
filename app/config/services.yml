@@ -37,3 +37,15 @@ services:
             doctrine: "@doctrine"
         tags:
             - { name: twig.extension }
+
+    app.twig.get_user_extension:
+        class: AppBundle\Twig\GetUserExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+
+    app.notification_service:
+        class: AppBundle\Services\NotificationService
+        arguments: ["@doctrine.orm.entity_manager"]

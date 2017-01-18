@@ -48,6 +48,8 @@ class FollowController extends Controller
         $flush = $em->flush();
 
         if ($flush == null){
+            $notification = $this->get('app.notification_service');
+            $notification->set($followed, 'follow', $user->getId());
             $status = "Ahora estas siguiendo a este Usuario";
         }else{
             $status = "No se ha podido seguir a este Usuario";
@@ -98,10 +100,11 @@ class FollowController extends Controller
     /**
      * Carga vista con lista de usuarios que esta siguiendo el usuario logueado
      * o con lista de usuarios que siguen al usuario logueado
-     * para diferenciar se usa parametro a través de URL
+     * para diferenciar se usa parametro type a través de URL
      *
      * @param Request $request
      * @param null $nick
+     * @param null $type
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function followsListAction(Request $request, $nick = null, $type = null)
