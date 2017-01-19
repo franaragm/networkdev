@@ -4,12 +4,14 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class NotificationController extends Controller
 {
 
     /**
      * Muestra vista con las notificaciones del usuario logueado
+     * y marca notificaciones como leidas
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -33,10 +35,34 @@ class NotificationController extends Controller
             5 //numero de registros por paginas
         );
 
+        // marca notificaciones como leidas
+        $notification = $this->get('app.notification_service');
+        $notification->read($user);
+
         return $this->render('AppBundle:Notification:notifications.html.twig', array(
             'profile_user' => $user,
             'notifications' => $pagination
         ));
 
+    }
+
+    /**
+     * Devuelve el número de notificaciones para el usuario logueado
+     * mediante AJAX se llama a la ruta de este método y el valor de respuesta
+     * se muestra en el layout
+     *
+     * @return Response
+     */
+    public function countNotificationsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $notification_repo = $em->getRepository("BackendBundle:Notification");
+
+        $notifications = $notification_repo->findBy(array(
+            'user' => $this->getUser(),
+            'readed' => 0
+        ));
+
+        return new Response(count($notifications));
     }
 }

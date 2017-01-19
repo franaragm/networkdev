@@ -1,3 +1,7 @@
 notifications_page:
     path: /notifications
     defaults: { _controller: AppBundle:Notification:notifications }
+
+notifications_ajax:
+    path: /notifications/get
+    defaults: { _controller: AppBundle:Notification:countNotifications }
