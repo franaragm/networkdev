@@ -1,6 +1,7 @@
 BackendBundle\Entity\User:
     type: entity
     table: sn_user
+    repositoryClass: BackendBundle\Repository\UserRepository
     uniqueConstraints:
         user_uniques_fields:
             columns:

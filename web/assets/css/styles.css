@@ -266,3 +266,11 @@ body {
 .profile-box #user_stats .number-stat {
     font-weight: bold;
 }
+
+/* ------------------- Mensajes Privados ---------------- */
+
+#new-private-message input,
+#new-private-message textarea,
+#new-private-message select {
+    margin-bottom: 10px;
+}
