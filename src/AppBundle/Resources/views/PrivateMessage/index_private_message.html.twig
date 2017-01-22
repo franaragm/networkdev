@@ -2,15 +2,25 @@
 
 {% block content %}
     <div class="container">
-        <div id="new-private-message" class="col-lg-12 box-default">
+        <div class="col-lg-12 box-default">
             <h1 class="box-header">Mensajeria privada</h1>
-            <div class="col-lg-6">
+            <div id="new-private-message" class="col-lg-6">
                 <h4>Enviar nuevo mensaje privado</h4>
                 {{ form_start(form, {'enctype':'multipart/form-data'}) }}
 
                 {{ form_end(form) }}
                 <br>
                 <a href="{{ path('private_message_sended') }}" class="btn btn-warning">Mensajes Enviados</a>
+            </div>
+
+            <div class="col-lg-6">
+                <h4>Mensajes Recibidos</h4>
+                <hr />
+
+                <div class="box-content">
+                    {% include 'AppBundle:PrivateMessage:_private_messages_list.html.twig' %}
+                </div>
+
             </div>
 
             <div class="clearfix"></div>
