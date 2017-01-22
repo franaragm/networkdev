@@ -164,4 +164,32 @@ class PrivateMessageController extends Controller
         return $pagination;
     }
 
+    /**
+     * Devuelve numero de mensajes privados no leidos
+     * este método es llamado por AJAX
+     *
+     * @return Response
+     */
+    public function notReadedAction(Request $request)
+    {
+        $isAjax = $request->isXmlHttpRequest();
+
+        if (!$isAjax) {
+            // si se indica ../../ redirecciona a /private-message
+            // si no se indica redirecciona a /private-message/notification/private-message
+            return $this->redirect("../../private-message");
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $pm_repo = $em->getRepository('BackendBundle:PrivateMessage');
+        $num_not_readed_pm = count($pm_repo->findBy(array(
+            'receiver' => $user,
+            'readed' => 0
+        )));
+
+        return new Response($num_not_readed_pm);
+    }
+
 }

@@ -51,10 +51,19 @@ class NotificationController extends Controller
      * mediante AJAX se llama a la ruta de este método y el valor de respuesta
      * se muestra en el layout
      *
+     * @param Request $request
      * @return Response
      */
-    public function countNotificationsAction()
+    public function countNotificationsAction(Request $request)
     {
+        $isAjax = $request->isXmlHttpRequest();
+
+        if (!$isAjax) {
+            // si se indica ../ redirecciona a /notifications
+            // si no se indica redirecciona a /notifications/notifications
+            return $this->redirect("../notifications");
+        }
+
         $em = $this->getDoctrine()->getManager();
         $notification_repo = $em->getRepository("BackendBundle:Notification");
 
