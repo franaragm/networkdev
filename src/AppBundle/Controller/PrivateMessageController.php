@@ -103,12 +103,62 @@ class PrivateMessageController extends Controller
             }
 
             $this->session->getFlashBag()->add("status", $status);
-            return $this->redirectToRoute('private_message_send');
+            return $this->redirectToRoute('private_message_index');
         }
 
-        return $this->render('AppBundle:PrivateMessage:form_private_message.html.twig', array(
+        return $this->render('AppBundle:PrivateMessage:index_private_message.html.twig', array(
             'form' => $form->createView()
         ));
+    }
+
+    /**
+     * Muestra vista con los mensajes enviados por el usuario logueado
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function sendedAction(Request $request)
+    {
+        $private_messages = $this->getPrivateMessages($request, "sended");
+
+        return $this->render('AppBundle:PrivateMessage:sended.html.twig', array(
+            'private_messages' => $private_messages
+        ));
+
+    }
+
+    /**
+     * Devuelve los mensajes privados recibidos o enviados dependiendo
+     * del parámetro type
+     *
+     * @param $request
+     * @param null $type si es "sended" devuelve mensajes enviados
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function getPrivateMessages($request, $type = null)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $user_id = $user->getId();
+
+        if($type == "sended") {
+            $dql = "SELECT p FROM BackendBundle:PrivateMessage p WHERE"
+                . " p.emitter = $user_id ORDER BY p.id DESC";
+        } else {
+            $dql = "SELECT p FROM BackendBundle:PrivateMessage p WHERE"
+                . " p.receiver = $user_id ORDER BY p.id DESC";
+        }
+
+        $query = $em->createQuery($dql);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // parametro request de paginacion y en que num de pagina empieza
+            5 //numero de registros por paginas
+        );
+
+        return $pagination;
     }
 
 }
