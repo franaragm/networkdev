@@ -14,7 +14,14 @@
                     {{ message.emitter.name }} {{ message.emitter.surname }}
                 </a>
                 -
-                {{ message.emitter.nick }}
+                {% if type == 'sended' %}
+                    Para
+                    <a style="font-weight: bold;" href="{{ path('user_profile', {'nick': message.receiver.nick}) }}">
+                        {{ message.receiver.nick }}
+                    </a>
+                {% else %}
+                    {{ message.emitter.nick }}
+                {% endif %}
                 -
                 <span class="pub-date">
                     {{ message.createdAt|long_time }}

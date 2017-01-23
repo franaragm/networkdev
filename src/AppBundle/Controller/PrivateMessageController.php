@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use BackendBundle\Entity\User;
 use BackendBundle\Entity\PrivateMessage;
 use AppBundle\Form\PrivateMessageType;
 
@@ -28,12 +27,13 @@ class PrivateMessageController extends Controller
     /**
      * Renderiza en vista el formulario para enviar Mensajes Privados para ello
      * usa clase PrivateMessageType para definir los campos del formulario
-     * Procesa el formulario y guarda los datos
+     * Procesa el formulario y guarda los datos, también pasa los
+     * mensajes recibidos a la vista para que se muestren
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function sendPrivateMessageAction(Request $request)
+    public function indexPrivateMessageAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
@@ -107,10 +107,12 @@ class PrivateMessageController extends Controller
         }
 
         $private_messages = $this->getPrivateMessages($request);
+        $this->setReadedPrivateMessages($em, $user); // marca mensajes como leidos
 
         return $this->render('AppBundle:PrivateMessage:index_private_message.html.twig', array(
             'form' => $form->createView(),
-            'private_messages' => $private_messages
+            'private_messages' => $private_messages,
+            'type' => 'received'
         ));
     }
 
@@ -125,7 +127,8 @@ class PrivateMessageController extends Controller
         $private_messages = $this->getPrivateMessages($request, "sended");
 
         return $this->render('AppBundle:PrivateMessage:sended.html.twig', array(
-            'private_messages' => $private_messages
+            'private_messages' => $private_messages,
+            'type' => 'sended'
         ));
 
     }
@@ -190,6 +193,37 @@ class PrivateMessageController extends Controller
         )));
 
         return new Response($num_not_readed_pm);
+    }
+
+    /**
+     * Marca como leidos los mensajes privados del usuario logueado
+     *
+     * @param $em
+     * @param $user
+     * @return bool
+     */
+    private function setReadedPrivateMessages($em, $user)
+    {
+        $pm_repo = $em->getRepository('BackendBundle:PrivateMessage');
+        $private_messages = $pm_repo->findBy(array(
+            'receiver' => $user,
+            'readed' => 0
+        ));
+
+        foreach($private_messages as $msg) {
+            $msg->setReaded(1);
+            $em->persist($msg);
+        }
+
+        $flush = $em->flush();
+
+        if ($flush == null) {
+            $result = true;
+        } else {
+            $result = false;
+        }
+
+        return $result;
     }
 
 }
