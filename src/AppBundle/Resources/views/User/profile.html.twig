@@ -2,6 +2,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/js/custom/buttons-follow.js') }}"></script>
     <script src="{{ asset('assets/js/custom/profile.js') }}"></script>
 {% endblock %}
 
@@ -17,6 +18,41 @@
         </div>
 
         <div class="name-surname">
+
+            {% if app.user.id != user.id %}
+                <div class="buttons-following">
+
+                    {# el usuario del perfil(user) sigue al usuario logueado(app.user)? #}
+                    {% if user|isfollow(app.user) == true %}
+                        <button class="btn btn-sm btn-disable disable">
+                            Te sigue
+                        </button>
+                    {% else %}
+                        <button class="btn btn-sm btn-disable disable">
+                            No te sigue
+                        </button>
+                    {% endif %}
+
+                    <button class="btn btn-sm btn-success btn-follow
+                                    {% if app.user|isfollow(user) == true %}
+                                        hidden
+                                    {% endif %}
+                                    " data-followed="{{ user.id }}">
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+                        Seguir
+                    </button>
+
+                    <button class="btn btn-sm btn-default btn-unfollow
+                                     {% if app.user|isfollow(user) == false %}
+                                        hidden
+                                    {% endif %}
+                                    " data-followed="{{ user.id }}">
+                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                        Dejar de seguir
+                    </button>
+                </div>
+            {% endif %}
+
             <h2>{{ user.name }} {{ user.surname }}</h2>
             <div class="clearfix"></div>
             <span class="nickname">

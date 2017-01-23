@@ -267,6 +267,10 @@ body {
     font-weight: bold;
 }
 
+.profile-box .buttons-following {
+    margin-top: 20px;
+}
+
 /* ------------------- Mensajes Privados ---------------- */
 
 #new-private-message input,
