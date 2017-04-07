@@ -16,7 +16,8 @@ class LikeExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('islike', array($this, 'islikeFilter'))
+            new \Twig_SimpleFilter('islike', array($this, 'islikeFilter')),
+            new \Twig_SimpleFilter('numlikes', array($this, 'numlikesFilter'))
         );
     }
 
@@ -48,6 +49,22 @@ class LikeExtension extends \Twig_Extension
         }
 
         return $result;
+    }
+
+    /**
+     * Obtención de número de likes de una publicación
+     *
+     * @param $publication
+     * @return int
+     */
+    public function numlikesFilter($publication)
+    {
+        $like_repo = $this->doctrine->getRepository('BackendBundle:Like');
+        $publication_likes = $like_repo->findBy(array(
+            'publication' => $publication
+        ));
+
+        return count($publication_likes);
     }
 
 }
