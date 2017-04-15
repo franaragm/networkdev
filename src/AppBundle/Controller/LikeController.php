@@ -65,6 +65,15 @@ class LikeController extends Controller
             'publication' => $id
         ));
 
+        //remove notification when user don't like anymore
+        $notification = $em->getRepository('BackendBundle:Notification')->findOneBy(array(
+                'user' => $user,
+                'extra' => $id
+            ));
+        if($notification){
+            $em->remove($notification);
+        }
+        
         $em->remove($like);
         $flush = $em->flush();
 
