@@ -28,19 +28,26 @@ class LikeController extends Controller
         $publication_repo = $em->getRepository('BackendBundle:Publication');
         $publication = $publication_repo->find($id);
 
-        $like = new Like();
-        $like->setUser($user);
-        $like->setPublication($publication);
-
-        $em->persist($like);
-        $flush = $em->flush();
-
-        if($flush == null) {
-            $notification = $this->get('app.notification_service');
-            $notification->set($publication->getUser(), 'like', $user->getId(), $publication->getId());
-            $status = 'Te gusta esta publicación!';
-        } else {
-            $status = 'No se ha podido guardar el Me Gusta';
+        //check if the user already likes the publication or not!
+        $like = $em->getRepository('BackendBundle:Like')->findBy(
+            array('user' => $user, 'publication' => $publication));
+        if(!$like)
+        {
+            $like = new Like();
+            $like->setUser($user);
+            $like->setPublication($publication);
+            $em->persist($like);
+            $flush = $em->flush();
+            if($flush == null) {
+                $notification = $this->get('app.notification_service');
+                $notification->set($publication->getUser(), 'like', $user->getId(), $publication->getId());
+                $status = 'Te gusta esta publicación!';
+            } else {
+                $status = 'No se ha podido guardar el Me Gusta';
+            }
+        }
+        else{
+            $status = 'you already like it!';
         }
 
         return new Response($status);
